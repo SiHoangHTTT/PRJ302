@@ -4,33 +4,52 @@
  */
 package model;
 
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.Statement;
 import java.util.ArrayList;
+import models.UserDTO;
 import utils.DbUtils;
+
 /**
  *
- * @author PC
+ * @author tungi
  */
 public class UserDAO {
-    ArrayList<UserDTO> list= new ArrayList<>();
 
     public UserDAO() {
-        
     }
-    
-    public UserDTO searchByID(String id){
-       Connection conn = DbUtils.getConnection();
-       String sql="SELECT * FROM tblUsers WHERE userID='" + id
-       System.out.println(sql);
-       Statement st = conn. 
-        
-   }catch(Exception e){
-    return null;
-}
-    public UserDTO login(String username, String password){
-        UserDTO user = searchByID(username);
-        if(user!=null && user.getPassword().equals(password))
-            return user;
-        else
+
+    public UserDTO searchById(String id) {
+        UserDTO user = null;
+        try {
+            Connection conn = DbUtils.getConnection();
+            String sql = "SELECT * FROM tblUsers WHERE userID='" + id + "'";
+            System.out.println(sql);
+            Statement st = conn.createStatement();
+            ResultSet rs = st.executeQuery(sql);
+
+            while (rs.next()) {
+                String userID = rs.getString("userID");
+                String fullName = rs.getString("fullName");
+                String password = rs.getString("password");
+                String roleID = rs.getString("roleID");
+                boolean status = rs.getBoolean("status");
+                user = new UserDTO(userID, fullName, password, roleID, status);
+            }
+        } catch (Exception e) {
             return null;
+        }
+        return user;
     }
+
+    public UserDTO login(String username, String password) {
+        UserDTO user = searchById(username);
+        if (user != null && user.getPassword().equals(password)) {
+            return user;
+        } else {
+            return null;
+        }
+    }
+
 }
