@@ -20,9 +20,11 @@
         %>
         
         Welcome <%=user.getFullName()%>,<br/>
+        
         Bang diu khien<br/><!-- comment -->
         Tinh lang 1 <br/>
         Tinh lang 2 <br/>
+        <a href="MainController?action=logout">Logout</a> <br/>
         <%
             }else{
             response.sendRedirect("login.jsp");
