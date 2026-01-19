@@ -5,8 +5,8 @@
 package model;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.Statement;
 import utils.DbUtils;
 
 /**
@@ -17,15 +17,18 @@ public class UserDAO {
 
     public UserDAO() {
     }
-
-    public UserDTO searchById(String id) {
+public UserDTO searchById(String id) {
         UserDTO user = null;
         try {
             Connection conn = DbUtils.getConnection();
-            String sql = "SELECT * FROM tblUsers WHERE userID='" + id + "'";
+            // Username: x' or 1=1 -- 
+            // Password: 1
+            // SELECT * FROM [dbo].[tblUsers] WHERE [userID]='x' or 1=1 --' AND [password]='hacker';
+            String sql = "SELECT * FROM tblUsers WHERE userID=?";
             System.out.println(sql);
-            Statement st = conn.createStatement();
-            ResultSet rs = st.executeQuery(sql);
+            PreparedStatement pst = conn.prepareStatement(sql);
+            pst.setString(1, id);
+            ResultSet rs = pst.executeQuery();
 
             while (rs.next()) {
                 String userID = rs.getString("userID");
@@ -38,6 +41,7 @@ public class UserDAO {
         } catch (Exception e) {
             return null;
         }
+        System.out.println(user);
         return user;
     }
 
@@ -50,4 +54,5 @@ public class UserDAO {
         }
     }
 
+    
 }
