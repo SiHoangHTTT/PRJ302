@@ -63,7 +63,7 @@
                             <td><%=u.getCity()%></td>
                             <td><%=u.getRegion()%></td>
                             <td><%=u.getType()%></td> 
-<td><%=u.getFoundedYear()%></td> 
+                            <td><%=u.getFoundedYear()%></td> 
                             <td><%=u.getTotalStudents()%></td>
                             <td><%=u.getTotalFaculties()%></td>
                             <td>
